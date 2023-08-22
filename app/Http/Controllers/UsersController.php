@@ -25,9 +25,64 @@ class UsersController extends Controller
         // idの値でユーザーを検索して収得
         $user = User::findOrFail($id);
         
+        // 関係するモデルの件数をロード
+        $user->loadRelationshipCounts();
+        
+        // ユーザの投稿一覧を作成日時の降順で収得
+        $microposts = $user->microposts()->orderBy('created_at', 'desc')->paginate(10);
+        
         // ユーザ詳細ビューでそれを表示
         return view('users.show', [
             'user' => $user,
+            'microposts' => $microposts,
             ]);
     } 
+    
+    /**
+     * ユーザのフォロー一覧ページを表示するアクション
+     * 
+     * @param $id ユーザのid
+     * @return \Illuminate\Http\Response
+     */
+     public function followings($id)
+     {
+        //  idの値でユーザを検索して収得
+        $user = User::findOrFail($id);
+        
+        // 関係するモデルの件数をロード
+        $user->loadRelationshipCounts();
+        
+        // ユーザのフォロー一覧を収得
+        $followings = $user->followings()->paginate(10);
+        
+        // フォロー一覧ビューでそれらを表示
+        return view('users.followings', [
+            'user' => $user,
+            'users' => $followings,
+        ]);
+     }
+     
+     /**
+      * ユーザのフォロワー一覧ページを表示するアクション
+      * 
+      * @param $id ユーザのid
+      * @return \Illuminate\Http\Response
+      */
+      public function followers($id) 
+      {
+        //   idの値でユーザを間作して収得
+        $user = User::findOrFail($id);
+        
+        // 関係するモデルの件数をロード
+        $user->loadRelationshipCounts();
+        
+        // ユーザのフォロワー一覧を収得
+        $followers = $user->followers()->paginate(10);
+        
+        // フォロワー一覧ビューでそれらを表示
+        return view('users.followers', [
+            'user' => $user,
+            'users' => $followers,
+        ]);
+      }
 }
