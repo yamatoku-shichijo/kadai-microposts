@@ -10,7 +10,7 @@
         <div class="badge ml-1">{{ $user->followings_count }}</div>
     </a>
     {{-- フォロワー一覧タブ --}}
-    <a href="{{ route('users.follweres', $user->id) }}" class="tab tab-lifted grow {{ Request::routeIs('users.followers') ? 'tab-active' : '' }}">
+    <a href="{{ route('users.followers', $user->id) }}" class="tab tab-lifted grow {{ Request::routeIs('users.followers') ? 'tab-active' : '' }}">
         Followers
         <div class="badge ml-1">{{ $user->followers_count }}</div>
     </a>
