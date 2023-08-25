@@ -70,7 +70,7 @@ class UsersController extends Controller
       */
       public function followers($id) 
       {
-        //   idの値でユーザを間作して収得
+        //   idの値でユーザを検索して収得
         $user = User::findOrFail($id);
         
         // 関係するモデルの件数をロード
@@ -85,4 +85,28 @@ class UsersController extends Controller
             'users' => $followers,
         ]);
       }
+      
+      /**
+       * ユーザのお気に入り一覧ページを表示するアクション
+       * 
+       * @param $micropost 投稿のid
+       * @return \Illuminate\Http\Response
+       */
+       public function favorites($id)
+       {
+        //   idの値でユーザを検索して収得
+        $user = User::findOrFail($id);
+        
+        // 関係するモデルの件数をロード
+        $user->loadRelationshipCounts();
+        
+        // ユーザのお気に入り一覧を収得
+        $favorites = $user->favorites()->paginate(10);
+        
+        // お気に入り一覧ビューでそれらを表示
+        return view('users.favorites', [
+            'user' => $user,
+            'microposts' => $favorites,
+            ]);
+       }
 }
