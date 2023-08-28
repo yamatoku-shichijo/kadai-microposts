@@ -20,9 +20,9 @@
                             <p class="mb-0">{!! nl2br(e($micropost->content))  !!}</p>
                         </div>
                         <div>
+                             {{-- お気に入りに関するボタン --}}
+                            @include('favorite.favorite_button')
                             @if (Auth::id() == $micropost->user_id)
-                                {{-- お気に入りに関するボタン --}}
-                                @include('favorite.favorite_button')
                                 {{-- 投稿削除ボタンのフォーム --}}
                                 <form method="POST" action="{{ route('microposts.destroy', $micropost->id) }}">
                                     @csrf
